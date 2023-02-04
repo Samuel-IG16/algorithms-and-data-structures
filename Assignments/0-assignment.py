@@ -130,13 +130,13 @@ password = fave_color + birth_month + pet_name
 print(password)
 
 # Question 3
-name_2 = 'Tani'
-phone_no = '0812345667'
+name_2 = input("What's your name")
+phone_no = int(input("What is your number"))
 print('Contact Info')
 print("Name: "+name_2)
 print("Number: "+str(phone_no))
 
 # Question 4
-name = 'Tanitolorun'
-age = 20
+name = input("What's your name")
+age = int(input("What's your age"))
 print("My name is "+ name + " and I am "+str(age)+" years old.")
