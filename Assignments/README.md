@@ -1,5 +1,5 @@
 # Assignments
-This folder contains the solutions to assignments 
+This folder contains the solutions to assignments in different files.
 
 Here you'll see the questions for the assignments
 
