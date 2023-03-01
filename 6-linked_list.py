@@ -1,6 +1,6 @@
 """Linked List Module
 
-This module implements the likedlist data structure by creating the basic building block (Nodes) and (LinkedList) as classes.
+This module implements the linkedlist data structure by creating the basic building block (Nodes) and (LinkedList) as classes.
 """
 
 class Node:
