@@ -1,227 +1,337 @@
-"""Linked List Module
+"""Linked List Module.
 
-This module implements the linkedlist data structure by creating the basic building block (Nodes) and (LinkedList) as classes.
+This module implements the LinkedList data structure by creating the basic building block (Nodes) and (LinkedList) as classes.
 """
 
 class Node:
     """Node class"""
-    def __init__(self, data=None, next=None):                                               # Constructor for the Node class
-        """Used to create node objects. It's called during object instantiation
+    def __init__(self, data=None, next_node=None):
+        """Used to create node objects. It's called during object instantiation.
         
-        args:
-            (optional) data: What you want to store
-            (optional) next: The addres of the next node
+        Args:
+            data: What you want to store. Optional, defaults to None.
+            next_node: The address of the next node. Optional, defaults to None.
         """
-        self.data = data                                                                    # data is a property of the class Node
-        self.next = next                                                                    # next is a property of the class Node
+        self.data = data    # data is a property of the Node class
+        self.next = next_node    # next is a property of the Node class
 
 class LinkedList:
-    """LinkedList class"""
-    def __init__(self, data=None):                                                          # Constructor for the LinkedList class
-        """Used to create a linkedlist object. It's called during object instantiation
+    """LinkedList class."""
+    def __init__(self, data=None):
+        """Used to create a LinkedList objects. It's called during object instantiation.
         
-        args:
-            (optional) data: What you want to store
+        Args:
+            data: What you want to store. Optional, defaults to None.
         """
-        self.head = None                                                # head is a property of the class LinkedList
-        self.tail = None                                                # tail is a property of the class LinkedList
+        self.head = None    # head is a property of the class LinkedList
+        self.tail = None    # tail is a property of the class LinkedList
         
-        if data == None:                                                # check if the linked list was initialized with an argument then update the length ...
-            self.length = 0                                             # ... property of the LinkedList
+        # Check if the linked list was initialized with an argument then update the length property of the LinkedList
+        if data is None:
+            self.length = 0
         else:
-            newNode = Node(data)                                        # Instantiate a node class
-            self.head = newNode                                         # Assign the node as head of linkedlist
-            self.tail = newNode                                         # Assign the node as tail of linkedlist
-            self.length = 1                                             # Update the length property of the linkedlist
+            node = Node(data)   # Create a node with given data
+            self.head = node    # Set the node as head of LinkedList
+            self.tail = node    # Set the node as tail of LinkedList
+            self.length = 1     # Update the length property of the LinkedList
     
-    def push(self, data):                                                                   # Insert_at_end method of the LinkedList objects
-        """Inserts data at end of linkedlist object
+    def push(self, data=None):
+        """Inserts node at end of LinkedList. When supplied a list, it creates nodes for each element of the list and 
+        insert them at the end of the LinkedList.
         
-        args:
-            data: What you want to store
+        Args:
+            data: What you want to store. Optional, defaults to None.
         
-        Returns: Updated linkedlist
+        Returns:
+            Updated LinkedList.
         """
-        newNode = Node(data)                                                                # Instantiate a node class
-        if self.head is None:                                                               # checks if head of linkedlist is empty
-            self.head = newNode                                                             # Assign the node as head of linkedlist
-            self.tail = newNode                                                             # Assign the node as tail of linkedlist
-        else:
-            self.tail.next = newNode                                                        # Assign the new node to the next property of previous node in linkedlist
-            self.tail = newNode                                                             # Assign the new node as tail of the linkedlist
-        self.length += 1                                                                    # Update the length property of the linkedlist
-        return self                                                                         # Return updated linkedlist
-    
-    def pop(self):                                                                          # Remove_at_end method of the LinkedList objects
-        """Remove data from end of linkedlist object
-        
-        Returns: Updated linkedlist
-        """
-        if self.head is None:                                                               # check if linkedlist is empty
-            print("No more Nodes to remove")
+        # Handle input error
+        if data is None:
+            print("No data was supplied for push operation!")
             return
         
-        # We need to transverse through the linked list by checking each individual node at a time and omiting the last node in the linkedlist
-        checknode = self.head                                                               # So we start with the head node of the linkedlist
-        currentnode = self.head
-        while checknode.next:                                                               # While the check node is not the last node
-            currentnode = checknode                                                         # Assign checknode as currentnode
-            checknode = checknode.next                                                      # Assign the next node as the new checknode
-        else:                                                                               # When we finally get to the last node we omit it by not assigning it to the current node and then ...
-            self.tail = currentnode                                                         # ... assign currentnode as tail of linkedlist
-            self.tail.next = None                                                           # Set it's next to None. This now serves as our last node
-            self.length -= 1                                                                # Update the length of the linkedlist
-            if self.length == 0:                                                            # To avoid negative length ...
-                self.head = None                                                            # ... stop this method from executing by setting head to zero
-        return currentnode                                                                  # Return updated linkedlist
-    
-    def unshift(self, data):                                                                # Insert_at_beginning method of the LinkedList objects
-        """Insert data at beginning of linkedlist object
-        
-        args:
-            data: What you want to store
-        
-        Returns: Updated linkedlist
-        """
-        newNode = Node(data)                                                                # Instantiate a node class
-        if self.head is None:                                                               # checks if head of linkedlist is empty
-            self.head = newNode                                                             # Assign the node as head of linkedlist
-            self.tail = newNode                                                             # Assign the node as tail of linkedlist
+        if type(data) == list:
+            for val in data:
+                self.push(val)
         else:
-            newNode.next= self.head                                                         # Assign head of linkedlist to the next property of new node node
-            self.head = newNode                                                             # Assign the new node as head of the linkedlist
-        self.length += 1                                                                    # Update the length property of the linkedlist
-        return self                                                                         # Return updated linkedlist
-    
-    def shift(self):                                                                        # Remove_at_beginning method of the LinkedList objects
-        """Remove data from beginning of linkedlist object
+            node = Node(data)
+            
+            # Check if LinkedList is empty and assign newly created node accordingly
+            if self.head is None:
+                self.head = node
+                self.tail = node
+            else:
+                self.tail.next = node
+                self.tail = node
+            self.length += 1
         
-        Returns: Updated linkedlist
-        """
-        if self.head is None:                                                               # check if linkedlist is empty
-            print("No more Nodes to remove")
-            return
-
-        # We employ the use a dummy variable to set the first node in linkedlist to None
-        currentnode = self.head                                                             # So we start by saving the current node at the head of the linkedlist in a dummy variable
-        self.head = currentnode.next                                                        # Then set the head of the linkedlist to the next property of the dummy variable
-        currentnode.next = None                                                             # Then set the next property of the dummy variable to None
-        self.length -= 1                                                                    # Update the length of the linkedlist
-        return self                                                                         # Return updated linkedlist
-    
-    def get(self, index):                                                                   # Get method of the LinkedList objects
-        """Gets node at given index of linkedlist object
-        
-        args:
-            index: Index of node
-        
-        Returns: The Node at given index
-        """
-        if index < 0 or index >= self.length:                                               # Checks for negative indexing and overflow(non-exixting indexes)
-            return None
-
-        # Iterate through the linkedlist to return the required node
-        currentnode = self.head                                                             # Start from the head of linkedlist
-        for i in range(index):                                                              # Loop through the range up until but not including the index
-            currentnode = currentnode.next                                                  # Set the the currentnode foreach iteration to a dummmy variable
-        # print(currentnode.data)
-        return currentnode                                                                  # Return the required node
-
-    def set(self, index, data):                                                             # Set method of the LinkedList objects
-        """Sets data into the data attribute of a given node index
-        
-        args:
-            index: Index of target node
-            data: What you want to store
-        
-        Returns: Updated linkedlist
-        """
-        if index < 0 or index >= self.length:                                               # Checks for negative indexing and overflow(non-exixting indexes)
-            return None
-        
-        node = self.get(index)                                                              # Gets the node we want to insert data in
-        node.data = data                                                                    # Calls the data attribute of node and assign the data value to it
-        return self                                                                         # Return updated linkedlist
-    
-    def insert(self, index, data):                                                          # Insert method of the LinkedList objects
-        """Insert a new node with data in front of the node of the given index
-        
-        args:
-            index: Index of target node
-            data: What you want to store
-        
-        Returns: Updated linkedlist
-        """
-        newNode=Node(data)                                                                  # Create New node with data that you want to insert in linkedlist
-        previousNode = self.get(index-1)                                                    # Get the node in front of the node of the given index
-        tempNode = previousNode.next                                                        # Set the next value to a temporary variable
-        previousNode.next = newNode                                                         # Set the new node to the next value
-        newNode.next = tempNode                                                             # Set the next value of the new node to the temporary variable
-        self.length +=1                                                                     # Update the length of the linkedlist
-        return self                                                                         # Return updated linkedlist
-    
-    def remove(self, index):                                                                # Remove method of the LinkedList objects
-        """Removes node object at a given index
-        
-        args:
-            index: Index of target node
-        
-        Returns: Updated linkedlist
-        """
-        if index < 0 or index >= self.length:                                               # Checks for negative indexing and overflow(non-exixting indexes)
-            return None
-        
-        # So we need to know the previous node to be able to remove a node except in the case where index is 0
-        if index == 0:
-            currentnode = self.head
-            self.head = currentnode.next
-            currentnode.next = None
-            self.length -=1
-        else:
-            previousNode = self.get(index-1)
-            currentnode = self.get(index)
-            previousNode.next = currentnode.next
-            self.length -=1
         return self
     
-    def print(self):                                                                        # Utility function to view the linkedlist as output
-        """Prints the linkedlist object in human readable format"""
+    def pop(self):
+        """Removes node from end of LinkedList.
+        
+        Returns:
+            Updated LinkedList.
+        """
+        # Check if LinkedList is empty
         if self.head is None:
-            print("Linked List is empty")
-            # print(self.length)
+            print("No more Nodes to remove from LinkedList")
+            return
+        
+        # We need to transverse through the linked list with two variables. Both will start at head of the LinkedList
+        temp = self.head    # Used to hold the second to last node
+        check = self.head   # Used to hold last node
+        
+        if self.length == 1:
+            self.head = None
+            self.length -= 1
+        else:
+            # Check each node's next value and passes it to temp except the last node
+            while check.next:
+                temp = check
+                check = check.next
+            else:                       # When we finally get to the last node we omit it by not assigning it to temp
+                self.tail = temp        # temp being on the second to last node is now set as tail of LinkedList
+                self.tail.next = None   # Tail is made to always point to None
+                self.length -= 1        # Update the length of the LinkedList
+
+        return self
+    
+    def unshift(self, data=None):
+        """Inserts node at beginning of LinkedList.
+        
+        Args:
+            data: What you want to store. Optional, defaults to None.
+        
+        Returns:
+            Updated LinkedList.
+        """
+        # Handle input error
+        if data is None:
+            print("No data was supplied for unshift operation!")
+            return
+        
+        node = Node(data)
+        
+        # Check if LinkedList is empty and assign newly created node accordingly
+        if self.head is None:
+            self.head = node
+            self.tail = node
+        else:
+            node.next = self.head
+            self.head = node
+        self.length += 1
+        
+        return self
+    
+    def shift(self):
+        """Removes node from beginning of LinkedList.
+        
+        Returns:
+            Updated LinkedList.
+        """
+        # Check if LinkedList is empty
+        if self.head is None:
+            print("No more Nodes to remove from LinkedList")
             return
 
-        # We need to transverse through the linked list by checking each individual node data at a time and printing it out from the linkedlist
-        currentnode = self.head                                                             # So we start with the head node of the linkedlist
-        linkedListstr = ''                                                                  # We intialize a string to represent the linkedlist
-        while currentnode:                                                                  # Loops till we hit a None
-            linkedListstr += str(currentnode.data) + ' --> '                                # Concatenate the data of the node to our linkedlist string representation
-            currentnode = currentnode.next                                                  # Move to the next node in linkedlist
-        print(linkedListstr)                                                                # Print out final string representation of linkedlist
-        # print(self.length)
+        # Set the next node after head as new head
+        temp = self.head
+        self.head = temp.next
+        temp.next = None
+        self.length -= 1
+        
+        return self
+    
+    def get(self, index=None):
+        """Gets node at given index of LinkedList.
+        
+        Args:
+            index: Index of node. Optional, defaults to None.
+        
+        Returns:
+            The Node at given index.
+        """
+        # Handle input error
+        if index is None:
+            print("Index is required for this operation!")
+            return
+        
+        # Handle input error. Checks for negative indexing and overflow(non-exixting indexes)
+        if index < 0 or index >= self.length:
+            print("Cannot process negative or non-exixting index!")
+            return
 
+        # Iterate through the LinkedList to return the required node
+        node = self.head
+        
+        for i in range(index):
+            node = node.next
+        
+        return node
 
-# So let test out the linkedlist
-myLinkedList = LinkedList()
-myLinkedList.push(1)
-myLinkedList.push(2)
-myLinkedList.pop()
+    def set(self, index=None, data=None):
+        """Overwrites the data attribute of a node at a given index.
+        
+        Args:
+            index: Index of target node. Optional, defaults to None.
+            data: What you want to store. Optional, defaults to None.
+        
+        Returns:
+            Updated LinkedList.
+        """
+        # Handle input error
+        if index is None and data is None:
+            print("No data or index was supplied for set operation!")
+            return
+        
+        if index is None:
+            print("Index is required for this operation!")
+            return
+        
+        if data is None:
+            print("Data is required for this operation!")
+            return
+        
+        # Handle input error. Checks for negative indexing and overflow(non-exixting indexes)
+        if index < 0 or index >= self.length:
+            print("Cannot process negative or non-exixting index!")
+            return
+        
+        node = self.get(index)  # Gets the node we want to insert data in
+        node.data = data        # Calls the data attribute of node and assign the data value to it
+        
+        return self
+    
+    def insert(self, index=None, data=None):
+        """Inserts a node in front of another node at a given index.
+        
+        Args:
+            index: Index of target node. Optional, defaults to None.
+            data: What you want to store. Optional, defaults to None.
+        
+        Returns:
+            Updated LinkedList.
+        """
+        # Handle input error
+        if index is None and data is None:
+            print("No data or index was supplied for set operation!")
+            return
+        
+        if index is None:
+            print("Index is required for this operation!")
+            return
+        
+        if data is None:
+            print("Data is required for this operation!")
+            return
+        
+        # Handle input error. Checks for negative indexing and overflow(non-exixting indexes)
+        if index < 0 or index >= self.length:
+            print("Cannot process negative or non-exixting index!")
+            return
+        
+        # Check if we want to insert in front of head
+        if self.get(index) == self.head:
+            self.unshift(data)  # Inserts in front of head
+        else:
+            node = Node(data)
+            prevNode = self.get(index-1)    # Get the node to the left of insert position
+            curr = prevNode.next            # Get the node to the right of insert position
+            prevNode.next = node            # Set the new node to the next value of node on left
+            node.next = curr                # Set the new node next to the node on right
+            self.length +=1                 # Update the length of the LinkedList
+        
+        return self
+    
+    def remove(self, index=None):
+        """Removes node object at a given index.
+        
+        Args:
+            index: Index of target node. Optional, defaults to None.
+        
+        Returns:
+            Updated LinkedList.
+        """
+        # Handle input error
+        if index is None:
+            print("Index is required for this operation!")
+            return
+        
+        # Handle input error. Checks for negative indexing and overflow(non-exixting indexes)
+        if index < 0 or index >= self.length:
+            print("Cannot process negative or non-exixting index!")
+            return
+        
+        # Check if we want to remove head or tail
+        if self.get(index) == self.head:
+            self.shift()  # Removes head
+        elif self.get(index) == self.tail:
+            self.pop()  # Removes tail
+        else:
+            temp = self.get(index)          # Get the node to remove 
+            prevNode = self.get(index-1)    # Get the node to the left of remove position
+            nextNode = self.get(index+1)    # Get the node to the right of remove position
+            prevNode.next = nextNode        # Set the next of left to right node
+            temp.next = None                # Set the node to remove to None
+            self.length -= 1                # Update the length of the LinkedList
+       
+        return self
+    
+    def reverse(self):
+        """Reverse the LinkedList.
+        
+        Returns:
+            Reversed LinkedList.
+        """
+        # Check if LinkedList is not empty
+        if self.head is not None:
+            curr = self.head                    # Start at head and is used to change direction of next
+            self.head = self.tail               # Rename tail as head of LinkedList
+            self.tail = curr                    # Rename head as tail of LinkedList
+            next = curr.next                    # The next node to the current node
+            prev = None                         # The previous node to the current node
+            
+            # We will be working with three variables while iterating through the list 
+            for i in range(self.length):
+                next = curr.next                # Move next a step forward
+                curr.next = prev                # Move the link in the opposite direction 
+                prev = curr                     # Move previous node to current position
+                curr = next                     # Move current node to next position
+        else:
+            return
+        
+        return self
+    
+    def print(self):
+        """Prints the LinkedList in human readable format"""
+        # We intialize a string to represent the LinkedList
+        linkedListstr = ''
+        start = self.head
+        
+        # Loops till we hit a None
+        while start:
+            linkedListstr += str(start.data) + ' --> '  # Concatenate the data of the node to our LinkedList string representation
+            start = start.next                          # Move to the next node in LinkedList
+        
+        # Check if LinkedList is empty
+        if linkedListstr == '':
+            print("LinkedList is empty!")
+            print("Length of LinkedList: ", self.length)
+        else:
+            print(linkedListstr)
+            print("Length of LinkedList: ", self.length)
 
-# myLinkedList.pop()
-# myLinkedList.pop()
-
-myLinkedList.unshift(9)
-myLinkedList.unshift(8)
-myLinkedList.shift()
-
-# myLinkedList.shift()
-# myLinkedList.shift()
-# myLinkedList.shift()
-
-myLinkedList.set(1, 5)
-myLinkedList.insert(1, 3)
-myLinkedList.remove(1)
-
-myLinkedList.print()
-
-myLinkedList.get(1)
+# So let test out the LinkedList Class and its methods
+myFirstLinkedList = LinkedList()
+myFirstLinkedList.push(3)           
+myFirstLinkedList.push([2, 1])
+myFirstLinkedList.reverse()
+myFirstLinkedList.pop()
+myFirstLinkedList.unshift(0)
+myFirstLinkedList.shift()
+myFirstLinkedList.set(0, 1)
+myFirstLinkedList.insert(0, 0)
+myFirstLinkedList.remove(1)
+print(type(myFirstLinkedList.get(0)))
+myFirstLinkedList.print()
